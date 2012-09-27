@@ -54,14 +54,10 @@ import org.apache.naming.resources.FileDirContext;
 import org.apache.naming.resources.ProxyDirContext;
 import org.apache.tomcat.util.IntrospectionUtils;
 import org.jboss.annotation.javaee.Icon;
-import org.jboss.as.clustering.ClassLoaderAwareClassResolver;
-import org.jboss.as.clustering.web.DistributedCacheManagerFactory;
-import org.jboss.as.clustering.web.OutgoingDistributableSessionData;
 import org.jboss.as.server.deployment.Attachments;
 import org.jboss.as.server.deployment.DeploymentUnit;
 import org.jboss.as.web.WebLogger;
 import org.jboss.as.web.deployment.helpers.VFSDirContext;
-import org.jboss.as.web.session.DistributableSessionManager;
 import org.jboss.marshalling.ClassResolver;
 import org.jboss.marshalling.ModularClassResolver;
 import org.jboss.metadata.javaee.spec.DescriptionGroupMetaData;
@@ -120,7 +116,6 @@ import org.jboss.vfs.VirtualFile;
 public class JBossContextConfig extends ContextConfig {
     private DeploymentUnit deploymentUnitContext = null;
     private Set<String> overlays = new HashSet<String>();
-    private final InjectedValue<DistributedCacheManagerFactory> factory = new InjectedValue<DistributedCacheManagerFactory>();
 
     /**
      * <p>
@@ -258,18 +253,6 @@ public class JBossContextConfig extends ContextConfig {
             String displayName = dg.getDisplayName();
             if (displayName != null) {
                 context.setDisplayName(displayName);
-            }
-        }
-
-        // Distributable
-        if (metaData.getDistributable() != null) {
-            try {
-                Module module = this.deploymentUnitContext.getAttachment(Attachments.MODULE);
-                ClassResolver resolver = ModularClassResolver.getInstance(module.getModuleLoader());
-                context.setManager(new DistributableSessionManager<OutgoingDistributableSessionData>(this.factory.getValue(), metaData, new ClassLoaderAwareClassResolver(resolver, module.getClassLoader())));
-                context.setDistributable(true);
-            } catch (Exception e) {
-                WebLogger.WEB_LOGGER.clusteringNotSupported();
             }
         }
 
@@ -881,9 +864,5 @@ public class JBossContextConfig extends ContextConfig {
             context.setConfigured(false);
         }
 
-    }
-
-    Injector<DistributedCacheManagerFactory> getDistributedCacheManagerFactoryInjector() {
-        return this.factory;
     }
 }

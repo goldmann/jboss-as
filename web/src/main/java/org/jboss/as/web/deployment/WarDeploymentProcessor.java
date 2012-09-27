@@ -30,8 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.security.jacc.PolicyConfiguration;
-
 import org.apache.catalina.ContainerListener;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleListener;
@@ -40,15 +38,9 @@ import org.apache.catalina.Realm;
 import org.apache.catalina.Valve;
 import org.apache.catalina.core.StandardContext;
 import org.apache.tomcat.util.IntrospectionUtils;
-import org.jboss.as.clustering.web.DistributedCacheManagerFactory;
-import org.jboss.as.clustering.web.DistributedCacheManagerFactoryService;
 import org.jboss.as.controller.PathElement;
 import org.jboss.as.ee.component.EEModuleDescription;
 import org.jboss.as.naming.deployment.JndiNamingDependencyProcessor;
-import org.jboss.as.security.deployment.AbstractSecurityDeployer;
-import org.jboss.as.security.plugins.SecurityDomainContext;
-import org.jboss.as.security.service.JaccService;
-import org.jboss.as.security.service.SecurityDomainService;
 import org.jboss.as.server.deployment.Attachments;
 import org.jboss.as.server.deployment.DeploymentPhaseContext;
 import org.jboss.as.server.deployment.DeploymentUnit;
@@ -60,9 +52,6 @@ import org.jboss.as.web.WebDeploymentDefinition;
 import org.jboss.as.web.WebSubsystemServices;
 import org.jboss.as.web.deployment.component.ComponentInstantiator;
 import org.jboss.as.web.ext.WebContextFactory;
-import org.jboss.as.web.security.JBossWebRealmService;
-import org.jboss.as.web.security.SecurityContextAssociationValve;
-import org.jboss.as.web.security.WarJaccService;
 import org.jboss.dmr.ModelNode;
 import org.jboss.metadata.ear.jboss.JBossAppMetaData;
 import org.jboss.metadata.ear.spec.EarMetaData;
@@ -80,8 +69,6 @@ import org.jboss.msc.service.ServiceController.Mode;
 import org.jboss.msc.service.ServiceName;
 import org.jboss.msc.service.ServiceRegistryException;
 import org.jboss.msc.service.ServiceTarget;
-import org.jboss.security.SecurityConstants;
-import org.jboss.security.SecurityUtil;
 import org.jboss.vfs.VirtualFile;
 
 import static org.jboss.as.web.WebMessages.MESSAGES;
@@ -134,8 +121,6 @@ public class WarDeploymentProcessor implements DeploymentUnitProcessor {
 
     @Override
     public void undeploy(final DeploymentUnit context) {
-        AbstractSecurityDeployer<?> deployer = new WarSecurityDeployer();
-        deployer.undeploy(context);
     }
 
     protected void processDeployment(final String hostName, final WarMetaData warMetaData, final DeploymentUnit deploymentUnit,
@@ -159,9 +144,6 @@ public class WarDeploymentProcessor implements DeploymentUnitProcessor {
         // Create the context
         final StandardContext webContext = contextFactory.createContext(deploymentUnit);
         final JBossContextConfig config = new JBossContextConfig(deploymentUnit);
-
-        // Add SecurityAssociationValve right at the beginning
-        webContext.addValve(new SecurityContextAssociationValve(deploymentUnit));
 
         // Set the deployment root
         try {
@@ -252,36 +234,17 @@ public class WarDeploymentProcessor implements DeploymentUnitProcessor {
                 break;
         }
 
-        String metaDataSecurityDomain = metaData.getSecurityDomain();
-        if(metaDataSecurityDomain == null) {
-            metaDataSecurityDomain = getJBossAppSecurityDomain(deploymentUnit);
-        }
-        if (metaDataSecurityDomain != null) {
-            metaDataSecurityDomain = metaDataSecurityDomain.trim();
-        }
-
-        String securityDomain = metaDataSecurityDomain == null ? SecurityConstants.DEFAULT_APPLICATION_POLICY : SecurityUtil
-                .unprefixSecurityDomain(metaDataSecurityDomain);
-
         // Setup an deployer configured ServletContext attributes
         final List<ServletContextAttribute> attributes = deploymentUnit.getAttachment(ServletContextAttribute.ATTACHMENT_KEY);
 
         try {
             final ServiceName deploymentServiceName = WebSubsystemServices.deploymentServiceName(hostName, pathName);
-            final ServiceName realmServiceName = deploymentServiceName.append("realm");
-
-            final JBossWebRealmService realmService = new JBossWebRealmService(deploymentUnit);
-            ServiceBuilder<?> builder = serviceTarget.addService(realmServiceName, realmService);
-            builder.addDependency(DependencyType.REQUIRED, SecurityDomainService.SERVICE_NAME.append(securityDomain),
-                    SecurityDomainContext.class, realmService.getSecurityDomainContextInjector()).setInitialMode(Mode.ACTIVE)
-                    .install();
 
             final WebDeploymentService webDeploymentService = new WebDeploymentService(webContext, injectionContainer, setupActions, attributes);
-            builder = serviceTarget
+            ServiceBuilder<?> builder = serviceTarget
                     .addService(deploymentServiceName, webDeploymentService)
                     .addDependency(WebSubsystemServices.JBOSS_WEB_HOST.append(hostName), VirtualHost.class,
                             new WebContextInjector(webContext)).addDependencies(injectionContainer.getServiceNames())
-                    .addDependency(realmServiceName, Realm.class, webDeploymentService.getRealm())
                     .addDependencies(deploymentUnit.getAttachmentList(Attachments.WEB_DEPENDENCIES))
                     .addDependency(JndiNamingDependencyProcessor.serviceName(deploymentUnit));
 
@@ -290,38 +253,7 @@ public class WarDeploymentProcessor implements DeploymentUnitProcessor {
                 builder.addDependencies(action.dependencies());
             }
 
-            if (metaData.getDistributable() != null) {
-                DistributedCacheManagerFactoryService factoryService = new DistributedCacheManagerFactoryService();
-                DistributedCacheManagerFactory factory = factoryService.getValue();
-                if (factory != null) {
-                    ServiceName factoryServiceName = deploymentServiceName.append("session");
-                    builder.addDependency(DependencyType.OPTIONAL, factoryServiceName, DistributedCacheManagerFactory.class, config.getDistributedCacheManagerFactoryInjector());
-
-                    ServiceBuilder<DistributedCacheManagerFactory> factoryBuilder = serviceTarget.addService(factoryServiceName, factoryService);
-                    boolean enabled = factory.addDeploymentDependencies(deploymentServiceName, deploymentUnit.getServiceRegistry(), serviceTarget, factoryBuilder, metaData);
-                    factoryBuilder.setInitialMode(enabled ? ServiceController.Mode.ON_DEMAND : ServiceController.Mode.NEVER).install();
-                }
-            }
-
             builder.install();
-
-            // adding JACC service
-            AbstractSecurityDeployer<?> deployer = new WarSecurityDeployer();
-            JaccService<?> service = deployer.deploy(deploymentUnit);
-            if (service != null) {
-                ((WarJaccService) service).setContext(webContext);
-                final ServiceName jaccServiceName = deploymentUnit.getServiceName().append(JaccService.SERVICE_NAME);
-                builder = serviceTarget.addService(jaccServiceName, service);
-                if (deploymentUnit.getParent() != null) {
-                    // add dependency to parent policy
-                    final DeploymentUnit parentDU = deploymentUnit.getParent();
-                    builder.addDependency(parentDU.getServiceName().append(JaccService.SERVICE_NAME), PolicyConfiguration.class,
-                            service.getParentPolicyInjector());
-                }
-                // add dependency to web deployment service
-                builder.addDependency(deploymentServiceName);
-                builder.setInitialMode(Mode.ACTIVE).install();
-            }
         } catch (ServiceRegistryException e) {
             throw new DeploymentUnitProcessingException(MESSAGES.failedToAddWebDeployment(), e);
         }

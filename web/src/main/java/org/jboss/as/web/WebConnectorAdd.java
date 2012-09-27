@@ -48,7 +48,7 @@ import org.jboss.as.controller.ServiceVerificationHandler;
 import org.jboss.as.controller.SimpleAttributeDefinition;
 import org.jboss.as.controller.registry.Resource;
 import org.jboss.as.network.SocketBinding;
-import org.jboss.as.threads.ThreadsServices;
+//import org.jboss.as.threads.ThreadsServices;
 import org.jboss.dmr.ModelNode;
 import org.jboss.msc.service.ServiceBuilder;
 import org.jboss.msc.service.ServiceController;
@@ -124,10 +124,10 @@ class WebConnectorAdd extends AbstractAddStepHandler {
         final ServiceBuilder<Connector> serviceBuilder = context.getServiceTarget().addService(WebSubsystemServices.JBOSS_WEB_CONNECTOR.append(name), service)
                 .addDependency(WebSubsystemServices.JBOSS_WEB, WebServer.class, service.getServer())
                 .addDependency(SocketBinding.JBOSS_BINDING_NAME.append(bindingRef), SocketBinding.class, service.getBinding());
-        if (operation.hasDefined(EXECUTOR)) {
-            String executorRef = operation.get(EXECUTOR).asString();
-            serviceBuilder.addDependency(ThreadsServices.executorName(executorRef), Executor.class, service.getExecutor());
-        }
+//        if (operation.hasDefined(EXECUTOR)) {
+//            String executorRef = operation.get(EXECUTOR).asString();
+//            serviceBuilder.addDependency(ThreadsServices.executorName(executorRef), Executor.class, service.getExecutor());
+//        }
         serviceBuilder.setInitialMode(enabled ? Mode.ACTIVE : Mode.NEVER);
         if (enabled) {
             serviceBuilder.addListener(verificationHandler);

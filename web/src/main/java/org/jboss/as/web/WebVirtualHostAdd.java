@@ -30,8 +30,6 @@ import static org.jboss.as.web.WebMessages.MESSAGES;
 
 import java.util.List;
 
-import org.jboss.as.clustering.web.sso.SSOClusterManager;
-import org.jboss.as.clustering.web.sso.SSOClusterManagerService;
 import org.jboss.as.controller.AbstractAddStepHandler;
 import org.jboss.as.controller.OperationContext;
 import org.jboss.as.controller.OperationFailedException;
@@ -40,8 +38,6 @@ import org.jboss.as.controller.ServiceVerificationHandler;
 import org.jboss.as.controller.registry.Resource;
 import org.jboss.as.controller.services.path.PathManager;
 import org.jboss.as.controller.services.path.PathManagerService;
-import org.jboss.as.server.mgmt.HttpManagementService;
-import org.jboss.as.server.mgmt.domain.HttpManagement;
 import org.jboss.dmr.ModelNode;
 import org.jboss.msc.service.ServiceBuilder;
 import org.jboss.msc.service.ServiceController;
@@ -102,20 +98,6 @@ class WebVirtualHostAdd extends AbstractAddStepHandler {
         if (operation.get(SSO_PATH.getKey(), SSO_PATH.getValue()).isDefined()) {
             ModelNode sso = operation.get(SSO_PATH.getKey(), SSO_PATH.getValue()).clone();
             service.setSso(sso);
-            if (sso.hasDefined(Constants.CACHE_CONTAINER)) {
-                ServiceName ssoName = WebSubsystemServices.JBOSS_WEB_HOST.append(name, Constants.SSO);
-                serviceBuilder.addDependency(ssoName, SSOClusterManager.class, service.getSSOClusterManager());
-
-                SSOClusterManagerService ssoService = new SSOClusterManagerService();
-                SSOClusterManager ssoManager = ssoService.getValue();
-                ssoManager.setCacheContainerName(sso.get(Constants.CACHE_CONTAINER).asString());
-                if (sso.hasDefined(Constants.CACHE_NAME)) {
-                    ssoManager.setCacheName(sso.get(Constants.CACHE_NAME).asString());
-                }
-                ServiceBuilder<SSOClusterManager> builder = serviceTarget.addService(ssoName, ssoService);
-                ssoService.getValue().addDependencies(serviceTarget, builder);
-                newControllers.add(builder.setInitialMode(ServiceController.Mode.ON_DEMAND).install());
-            }
         }
 
         if (operation.hasDefined(Constants.DEFAULT_WEB_MODULE)) {
@@ -131,7 +113,6 @@ class WebVirtualHostAdd extends AbstractAddStepHandler {
             newControllers.add(context.getServiceTarget().addService(WebSubsystemServices.JBOSS_WEB.append(name).append("welcome"), welcomeService)
                     .addDependency(PathManagerService.SERVICE_NAME, PathManager.class, welcomeService.getPathManagerInjector())
                     .addDependency(WebSubsystemServices.JBOSS_WEB_HOST.append(name), VirtualHost.class, welcomeService.getHostInjector())
-                    .addDependency(ServiceBuilder.DependencyType.OPTIONAL, HttpManagementService.SERVICE_NAME, HttpManagement.class, welcomeService.getHttpManagementInjector())
                     .addListener(verificationHandler)
                     .setInitialMode(ServiceController.Mode.ACTIVE)
                     .install());

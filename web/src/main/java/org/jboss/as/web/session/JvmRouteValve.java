@@ -35,7 +35,6 @@ import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.util.LifecycleSupport;
 import org.apache.catalina.valves.ValveBase;
-import org.jboss.as.clustering.web.OutgoingDistributableSessionData;
 import org.jboss.logging.Logger;
 
 /**
@@ -131,11 +130,6 @@ public class JvmRouteValve extends ValveBase implements Lifecycle {
             newId = this.manager.createSessionId(realId, this.manager.locate(realId));
         }
 
-        if (newId != null) {
-            // Fix the session's id
-            resetSessionId(sessionId, newId);
-        }
-
         // Now we know the session object has a correct id
         // Also need to ensure any session cookie is correct
         if (setCookie) {
@@ -156,26 +150,6 @@ public class JvmRouteValve extends ValveBase implements Lifecycle {
             if (newId != null) {
                 manager.setNewSessionCookie(newId, response);
             }
-        }
-    }
-
-    /**
-     * Update the id of the given session
-     *
-     * @param oldId id of the session to change
-     * @param newId new session id the session object should have
-     */
-    private void resetSessionId(String oldId, String newId) throws IOException {
-        ClusteredSession<? extends OutgoingDistributableSessionData> session = (ClusteredSession<?>) manager.findSession(oldId);
-        // change session id with the new one using local jvmRoute.
-        if (session != null) {
-            // Note this will trigger a session remove from the super Tomcat class.
-            session.resetIdWithRouteInfo(newId);
-            if (log_.isTraceEnabled()) {
-                log_.tracef("resetSessionId(): changed catalina session to= [%s] old one= [%s]", newId, oldId);
-            }
-        } else if (log_.isTraceEnabled()) {
-            log_.tracef("resetSessionId(): no session with id %s found", newId);
         }
     }
 

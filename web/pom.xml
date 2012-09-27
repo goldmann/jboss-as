@@ -86,22 +86,7 @@
 
         <dependency>
             <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-clustering-registry</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-clustering-web-spi</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.as</groupId>
             <artifactId>jboss-as-ee</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-security</artifactId>
         </dependency>
 
         <dependency>
@@ -163,11 +148,6 @@
             <artifactId>jbossweb</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-clustering-web-infinispan</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- Unfortunately we have to include this because of http://bugs.sun.com/view_bug.do?bug_id=6550655 -->
         <dependency>
             <groupId>org.rhq.helpers</groupId>

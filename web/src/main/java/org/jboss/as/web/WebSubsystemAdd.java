@@ -26,8 +26,6 @@ import java.util.List;
 
 import javax.management.MBeanServer;
 
-import org.jboss.as.clustering.web.DistributedCacheManagerFactory;
-import org.jboss.as.clustering.web.DistributedCacheManagerFactoryService;
 import org.jboss.as.controller.AbstractBoottimeAddStepHandler;
 import org.jboss.as.controller.AttributeDefinition;
 import org.jboss.as.controller.OperationContext;
@@ -142,15 +140,6 @@ class WebSubsystemAdd extends AbstractBoottimeAddStepHandler {
                 .setInitialMode(Mode.ON_DEMAND)
                 .install());
 
-        final DistributedCacheManagerFactory factory = new DistributedCacheManagerFactoryService().getValue();
-        if (factory != null) {
-            final InjectedValue<WebServer> server = new InjectedValue<WebServer>();
-            newControllers.add(target.addService(DistributedCacheManagerFactoryService.JVM_ROUTE_REGISTRY_ENTRY_PROVIDER_SERVICE_NAME, new JvmRouteRegistryEntryProviderService(server))
-                    .addDependency(WebSubsystemServices.JBOSS_WEB, WebServer.class, server)
-                    .setInitialMode(Mode.ON_DEMAND)
-                    .install());
-            newControllers.addAll(factory.installServices(target));
-        }
     }
 
     @Override

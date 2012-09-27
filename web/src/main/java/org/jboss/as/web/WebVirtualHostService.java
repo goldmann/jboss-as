@@ -28,9 +28,7 @@ import org.apache.catalina.authenticator.SingleSignOn;
 import org.apache.catalina.core.StandardHost;
 import org.apache.catalina.valves.AccessLogValve;
 import org.apache.catalina.valves.ExtendedAccessLogValve;
-import org.jboss.as.clustering.web.sso.SSOClusterManager;
 import org.jboss.as.controller.services.path.PathManager;
-import org.jboss.as.web.sso.ClusteredSingleSignOn;
 import org.jboss.dmr.ModelNode;
 import org.jboss.msc.service.Service;
 import org.jboss.msc.service.StartContext;
@@ -57,7 +55,6 @@ public class WebVirtualHostService implements Service<VirtualHost> {
 
     private final InjectedValue<PathManager> pathManagerInjector = new InjectedValue<PathManager>();
     private final InjectedValue<WebServer> webServer = new InjectedValue<WebServer>();
-    private final InjectedValue<SSOClusterManager> ssoManager = new InjectedValue<SSOClusterManager>();
 
     private VirtualHost host;
 
@@ -156,10 +153,6 @@ public class WebVirtualHostService implements Service<VirtualHost> {
         return webServer;
     }
 
-    public InjectedValue<SSOClusterManager> getSSOClusterManager() {
-        return ssoManager;
-    }
-
     static Valve createAccessLogValve(final String logDirectory, final ModelNode element) {
         //todo this should all use AD.resolveModelAttribute()
         boolean extended = false;
@@ -231,7 +224,7 @@ public class WebVirtualHostService implements Service<VirtualHost> {
     }
 
     Valve createSsoValve(final Container container, final ModelNode element) throws StartException {
-        final SingleSignOn ssoValve = element.hasDefined(Constants.CACHE_CONTAINER) ? new ClusteredSingleSignOn(this.ssoManager.getValue()) : new SingleSignOn();
+        final SingleSignOn ssoValve = new SingleSignOn();
         if (element.hasDefined(Constants.DOMAIN)) ssoValve.setCookieDomain(element.get(Constants.DOMAIN).asString());
         if (element.hasDefined(Constants.REAUTHENTICATE)) ssoValve.setRequireReauthentication(element.get(Constants.REAUTHENTICATE).asBoolean());
         return ssoValve;

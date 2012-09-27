@@ -49,7 +49,6 @@ import static org.jboss.as.web.WebMessages.MESSAGES;
 class WebDeploymentService implements Service<Context> {
 
     private final StandardContext context;
-    private final InjectedValue<Realm> realm = new InjectedValue<Realm>();
     private final WebInjectionContainer injectionContainer;
     private final List<SetupAction> setupActions;
     final List<ServletContextAttribute> attributes;
@@ -71,8 +70,6 @@ class WebDeploymentService implements Service<Context> {
                 context.setAttribute(attribute.getName(), attribute.getValue());
             }
         }
-
-        context.setRealm(realm.getValue());
 
         WebInjectionContainer.setWebInjectionContainer(injectionContainer);
         final List<SetupAction> actions = new ArrayList<SetupAction>();
@@ -124,10 +121,6 @@ class WebDeploymentService implements Service<Context> {
             throw new IllegalStateException();
         }
         return context;
-    }
-
-    public InjectedValue<Realm> getRealm() {
-        return realm;
     }
 
 }
