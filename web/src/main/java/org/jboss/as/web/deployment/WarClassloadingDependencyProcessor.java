@@ -47,11 +47,6 @@ public class WarClassloadingDependencyProcessor implements DeploymentUnitProcess
 
     private static final ModuleIdentifier JAVAX_EE_API = ModuleIdentifier.create("javaee.api");
 
-    private static final ModuleIdentifier JSF_IMPL = ModuleIdentifier.create("com.sun.jsf-impl");
-    private static final ModuleIdentifier JSF_API = ModuleIdentifier.create("javax.faces.api");
-    private static final ModuleIdentifier JSF_INTEGRATION = ModuleIdentifier.create("org.jboss.as.jsf");
-    private static final ModuleIdentifier JSF_1_2_IMPL = ModuleIdentifier.create("com.sun.jsf-impl", "1.2");
-    private static final ModuleIdentifier JSF_1_2_API = ModuleIdentifier.create("javax.faces.api", "1.2");
     private static final ModuleIdentifier BEAN_VALIDATION = ModuleIdentifier.create("org.hibernate.validator");
     private static final ModuleIdentifier JSTL = ModuleIdentifier.create("javax.servlet.jstl.api");
 
@@ -79,14 +74,8 @@ public class WarClassloadingDependencyProcessor implements DeploymentUnitProcess
         final ModuleSpecification moduleSpecification = deploymentUnit.getAttachment(Attachments.MODULE_SPECIFICATION);
         final ModuleLoader moduleLoader = Module.getBootModuleLoader();
 
-        final String jsfVersion = JsfVersionMarker.getVersion(topLevelDeployment);
-
-        addJSFAPI(jsfVersion, moduleSpecification, moduleLoader);
-
         // Add module dependencies on Java EE apis
         moduleSpecification.addSystemDependency(new ModuleDependency(moduleLoader, JAVAX_EE_API, false, false, false, false));
-
-        addJSFImpl(jsfVersion, moduleSpecification, moduleLoader);
 
         moduleSpecification.addSystemDependency(new ModuleDependency(moduleLoader, JSTL, false, false, false, false));
         moduleSpecification.addSystemDependency(new ModuleDependency(moduleLoader, BEAN_VALIDATION, false, false, true, false));
@@ -95,34 +84,6 @@ public class WarClassloadingDependencyProcessor implements DeploymentUnitProcess
         // don't export our internals
         moduleSpecification.addSystemDependency(new ModuleDependency(moduleLoader, JBOSS_WEB, false, false, true, false));
 
-    }
-
-    private void addJSFAPI(String jsfVersion, ModuleSpecification moduleSpecification, ModuleLoader moduleLoader) {
-        if (jsfVersion.equals(JsfVersionMarker.WAR_BUNDLES_JSF_IMPL)) return;
-
-        moduleSpecification.addSystemDependency(new ModuleDependency(moduleLoader, JSF_INTEGRATION, false, false, true, false));
-
-        ModuleIdentifier jsfModule = JSF_API;
-        if (jsfVersion.equals(JsfVersionMarker.JSF_1_2)) jsfModule = JSF_1_2_API;
-        moduleSpecification.addSystemDependency(new ModuleDependency(moduleLoader, jsfModule, false, false, false, false));
-
-
-    }
-
-    private void addJSFImpl(String jsfVersion, ModuleSpecification moduleSpecification, ModuleLoader moduleLoader) {
-        if (jsfVersion.equals(JsfVersionMarker.WAR_BUNDLES_JSF_IMPL)) return;
-
-        ModuleIdentifier jsfModule = null;
-        if (jsfVersion.equals(JsfVersionMarker.JSF_1_2)) jsfModule = JSF_1_2_IMPL;
-        if (jsfVersion.equals(JsfVersionMarker.JSF_2_0)) jsfModule = JSF_IMPL;
-        if (jsfModule == null) {
-            jsfModule = JSF_IMPL;
-            WebLogger.WEB_LOGGER.unknownJSFVersion(jsfVersion, JsfVersionMarker.JSF_2_0);
-        }
-
-        ModuleDependency jsf = new ModuleDependency(moduleLoader, jsfModule, false, false, false, false);
-        jsf.addImportFilter(PathFilters.getMetaInfFilter(), true);
-        moduleSpecification.addSystemDependency(jsf);
     }
 
     public void undeploy(final DeploymentUnit context) {
