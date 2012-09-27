@@ -47,7 +47,6 @@ import org.jboss.as.server.deployment.DeploymentUnitProcessingException;
 import org.jboss.as.server.deployment.DeploymentUnitProcessor;
 import org.jboss.as.server.deployment.module.ResourceRoot;
 import org.jboss.logging.Logger;
-import org.jboss.metadata.ear.spec.EarMetaData;
 import org.jboss.metadata.javaee.spec.EmptyMetaData;
 import org.jboss.metadata.javaee.spec.SecurityRolesMetaData;
 import org.jboss.metadata.merge.javaee.spec.SecurityRolesMetaDataMerger;
@@ -344,21 +343,6 @@ public class WarMetaDataProcessor implements DeploymentUnitProcessor {
         if (mergedMetaData.getModuleName() != null && !mergedMetaData.getModuleName().isEmpty()) {
             final EEModuleDescription description = deploymentUnit.getAttachment(org.jboss.as.ee.component.Attachments.EE_MODULE_DESCRIPTION);
             description.setModuleName(mergedMetaData.getModuleName());
-        }
-
-        //merge security roles from the ear
-        DeploymentUnit parent = deploymentUnit.getParent();
-        if (parent != null) {
-            final EarMetaData earMetaData = parent.getAttachment(org.jboss.as.ee.structure.Attachments.EAR_METADATA);
-            if (earMetaData != null) {
-                SecurityRolesMetaData earSecurityRolesMetaData = earMetaData.getSecurityRoles();
-                if(earSecurityRolesMetaData != null) {
-                    if(mergedMetaData.getSecurityRoles() == null) {
-                        mergedMetaData.setSecurityRoles(new SecurityRolesMetaData());
-                    }
-                    SecurityRolesMetaDataMerger.merge(mergedMetaData.getSecurityRoles(), mergedMetaData.getSecurityRoles(), earSecurityRolesMetaData);
-                }
-            }
         }
     }
 

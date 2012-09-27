@@ -53,8 +53,6 @@ import org.jboss.as.web.WebSubsystemServices;
 import org.jboss.as.web.deployment.component.ComponentInstantiator;
 import org.jboss.as.web.ext.WebContextFactory;
 import org.jboss.dmr.ModelNode;
-import org.jboss.metadata.ear.jboss.JBossAppMetaData;
-import org.jboss.metadata.ear.spec.EarMetaData;
 import org.jboss.metadata.javaee.spec.ParamValueMetaData;
 import org.jboss.metadata.web.jboss.ContainerListenerMetaData;
 import org.jboss.metadata.web.jboss.JBossServletMetaData;
@@ -332,15 +330,7 @@ public class WarDeploymentProcessor implements DeploymentUnitProcessor {
      * @return
      */
     private String getJBossAppSecurityDomain(final DeploymentUnit deploymentUnit) {
-        String securityDomain = null;
-        DeploymentUnit parent = deploymentUnit.getParent();
-        if (parent != null) {
-            final EarMetaData jbossAppMetaData = parent.getAttachment(org.jboss.as.ee.structure.Attachments.EAR_METADATA);
-            if (jbossAppMetaData instanceof JBossAppMetaData) {
-                securityDomain = ((JBossAppMetaData) jbossAppMetaData).getSecurityDomain();
-            }
-        }
-        return securityDomain;
+        return null;
     }
 }
 
