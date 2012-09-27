@@ -292,6 +292,7 @@
         <module>protocol</module>
         <module>server</module>
         <module>subsystem-test</module>
+        <module>web</module>
     </modules>
 
     <build>

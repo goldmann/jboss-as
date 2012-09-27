@@ -137,7 +137,31 @@
           ~ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
           -->
 
+        <module-def name="javax.annotation.api">
+            <maven-resource group="org.jboss.spec.javax.annotation" artifact="jboss-annotations-api_1.1_spec"/>
+        </module-def>
+
         <module-def name="javax.api"/>
+
+        <module-def name="javax.el.api">
+            <maven-resource group="org.jboss.spec.javax.el" artifact="jboss-el-api_2.2_spec"/>
+        </module-def>
+
+        <module-def name="javax.interceptor.api">
+            <maven-resource group="org.jboss.spec.javax.interceptor" artifact="jboss-interceptors-api_1.1_spec"/>
+        </module-def>
+
+        <module-def name="javax.servlet.api">
+            <maven-resource group="org.jboss.spec.javax.servlet" artifact="jboss-servlet-api_3.0_spec"/>
+        </module-def>
+
+        <module-def name="javax.servlet.jsp.api">
+            <maven-resource group="org.jboss.spec.javax.servlet.jsp" artifact="jboss-jsp-api_2.2_spec"/>
+        </module-def>
+
+        <module-def name="javax.servlet.jstl.api">
+            <maven-resource group="org.jboss.spec.javax.servlet.jstl" artifact="jboss-jstl-api_1.2_spec"/>
+        </module-def>
 
         <module-def name="javax.xml.stream.api"/>
 
@@ -187,8 +211,10 @@
 
         <module-def name="org.jboss.as.standalone"/>
 
-        <module-def name="org.jboss.com.sun.httpserver">
-            <maven-resource group="org.jboss.com.sun.httpserver" artifact="httpserver"/>
+        <module-def name="org.jboss.as.web">
+            <maven-resource group="org.jboss.as" artifact="jboss-as-web"/>
+            <maven-resource group="org.jboss.web" artifact="jasper-jdt"/>
+            <maven-resource group="org.jboss.web" artifact="jbossweb"/>
         </module-def>
 
         <module-def name="org.jboss.common-beans">
@@ -242,6 +268,11 @@
             <maven-resource group="org.jboss.logmanager" artifact="log4j-jboss-logmanager"/>
         </module-def>
 
+        <module-def name="org.jboss.metadata">
+            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-common"/>
+            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-web"/>
+        </module-def>
+
         <module-def name="org.jboss.sasl">
             <maven-resource group="org.jboss.sasl" artifact="jboss-sasl" />
         </module-def>
@@ -269,6 +300,8 @@
         <module-def name="org.jboss.xnio.nio">
             <maven-resource group="org.jboss.xnio" artifact="xnio-nio"/>
         </module-def>
+
+        <module-def name="sun.jdk"/>
 
     </target>
 
@@ -353,16 +386,8 @@
             <maven-resource group="javax.activation" artifact="activation"/>
         </module-def>
 
-        <module-def name="javax.annotation.api">
-            <maven-resource group="org.jboss.spec.javax.annotation" artifact="jboss-annotations-api_1.1_spec"/>
-        </module-def>
-
         <module-def name="javax.ejb.api">
             <maven-resource group="org.jboss.spec.javax.ejb" artifact="jboss-ejb-api_3.1_spec"/>
-        </module-def>
-
-        <module-def name="javax.el.api">
-            <maven-resource group="org.jboss.spec.javax.el" artifact="jboss-el-api_2.2_spec"/>
         </module-def>
 
         <module-def name="javax.enterprise.api">
@@ -383,10 +408,6 @@
 
         <module-def name="javax.inject.api">
             <maven-resource group="javax.inject" artifact="javax.inject"/>
-        </module-def>
-
-        <module-def name="javax.interceptor.api">
-            <maven-resource group="org.jboss.spec.javax.interceptor" artifact="jboss-interceptors-api_1.1_spec"/>
         </module-def>
 
         <module-def name="javax.jms.api">
@@ -425,18 +446,6 @@
             <maven-resource group="org.jboss.spec.javax.security.jacc" artifact="jboss-jacc-api_1.4_spec"/>
         </module-def>
 
-        <module-def name="javax.servlet.api">
-            <maven-resource group="org.jboss.spec.javax.servlet" artifact="jboss-servlet-api_3.0_spec"/>
-        </module-def>
-
-        <module-def name="javax.servlet.jsp.api">
-            <maven-resource group="org.jboss.spec.javax.servlet.jsp" artifact="jboss-jsp-api_2.2_spec"/>
-        </module-def>
-
-        <module-def name="javax.servlet.jstl.api">
-            <maven-resource group="org.jboss.spec.javax.servlet.jstl" artifact="jboss-jstl-api_1.2_spec"/>
-        </module-def>
-
         <module-def name="javax.transaction.api">
             <maven-resource group="org.jboss.spec.javax.transaction" artifact="jboss-transaction-api_1.1_spec"/>
         </module-def>
@@ -447,10 +456,6 @@
 
         <module-def name="javax.ws.rs.api">
             <maven-resource group="org.jboss.spec.javax.ws.rs" artifact="jboss-jaxrs-api_1.1_spec"/>
-        </module-def>
-
-        <module-def name="javax.xml.bind.api">
-            <maven-resource group="org.jboss.spec.javax.xml.bind" artifact="jboss-jaxb-api_2.2_spec"/>
         </module-def>
 
         <module-def name="javax.xml.jaxp-provider"/>
@@ -865,13 +870,6 @@
             <maven-resource group="org.jboss.as" artifact="jboss-as-transactions"/>
         </module-def>
 
-        <module-def name="org.jboss.as.web">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-web"/>
-            <maven-resource group="org.jboss.web" artifact="jasper-jdt"/>
-            <maven-resource group="org.jboss.web" artifact="jbossweb"/>
-            <extract-native-jar group="org.jboss.as" artifact="jbossweb-native"/>
-        </module-def>
-
         <module-def name="org.jboss.as.webservices">
             <maven-resource group="org.jboss.as" artifact="jboss-as-webservices-server-integration"/>
             <maven-resource-with-classifier group="org.jboss.ws.cxf" artifact="jbossws-cxf-resources" classifier="jboss712"/>
@@ -945,14 +943,6 @@
 
         <module-def name="org.jboss.jts.integration">
             <maven-resource group="org.jboss.jbossts" artifact="jbossjts-integration"/>
-        </module-def>
-
-        <module-def name="org.jboss.metadata">
-            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-common"/>
-            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-appclient"/>
-            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-ejb"/>
-            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-web"/>
-            <maven-resource group="org.jboss.metadata" artifact="jboss-metadata-ear"/>
         </module-def>
 
         <module-def name="org.jboss.netty">
@@ -1187,8 +1177,6 @@
         <module-def name="nu.xom">
             <maven-resource group="xom" artifact="xom"/>
         </module-def>
-
-        <module-def name="sun.jdk"/>
 
         <module-def name="ibm.jdk"/>
 

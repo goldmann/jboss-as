@@ -106,7 +106,6 @@
     </build>
 
     <dependencies>
-
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -146,6 +145,11 @@
         <dependency>
             <groupId>org.jboss.as</groupId>
             <artifactId>jboss-as-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-web</artifactId>
         </dependency>
 
         <dependency>
@@ -201,6 +205,11 @@
         <dependency>
             <groupId>org.jboss.msc</groupId>
             <artifactId>jboss-msc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
+            <artifactId>jboss-jstl-api_1.2_spec</artifactId>
         </dependency>
     </dependencies>
 
@@ -1016,11 +1025,6 @@
 
                 <dependency>
                     <groupId>org.jboss.as</groupId>
-                    <artifactId>jboss-as-web</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.as</groupId>
                     <artifactId>jboss-as-weld</artifactId>
                 </dependency>
 
@@ -1454,11 +1458,6 @@
                 <dependency>
                     <groupId>org.jboss.spec.javax.servlet.jsp</groupId>
                     <artifactId>jboss-jsp-api_2.2_spec</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
-                    <artifactId>jboss-jstl-api_1.2_spec</artifactId>
                 </dependency>
 
                 <dependency>
