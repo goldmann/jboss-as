@@ -135,6 +135,16 @@
 
         <dependency>
             <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-ee</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.as</groupId>
+            <artifactId>jboss-as-naming</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jboss.as</groupId>
             <artifactId>jboss-as-server</artifactId>
         </dependency>
 
@@ -871,11 +881,6 @@
 
                 <dependency>
                     <groupId>org.jboss.as</groupId>
-                    <artifactId>jboss-as-ee</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.as</groupId>
                     <artifactId>jboss-as-ee-deployment</artifactId>
                 </dependency>
 
@@ -942,11 +947,6 @@
                 <dependency>
                     <groupId>org.jboss.as</groupId>
                     <artifactId>jboss-as-modcluster</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.jboss.as</groupId>
-                    <artifactId>jboss-as-naming</artifactId>
                 </dependency>
 
                 <dependency>

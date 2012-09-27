@@ -284,6 +284,8 @@
         <module>controller</module>
         <module>controller-client</module>
         <module>deployment-repository</module>
+        <module>ee</module>
+        <module>naming</module>
         <module>network</module>
         <module>platform-mbean</module>
         <module>process-controller</module>

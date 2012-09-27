@@ -157,6 +157,14 @@
             <maven-resource group="org.jboss.as" artifact="jboss-as-deployment-repository"/>
         </module-def>
 
+        <module-def name="org.jboss.as.ee">
+            <maven-resource group="org.jboss.as" artifact="jboss-as-ee"/>
+        </module-def>
+
+        <module-def name="org.jboss.as.naming">
+            <maven-resource group="org.jboss.as" artifact="jboss-as-naming"/>
+        </module-def>
+
         <module-def name="org.jboss.as.network">
             <maven-resource group="org.jboss.as" artifact="jboss-as-network"/>
         </module-def>
@@ -756,10 +764,6 @@
 
     	<module-def name="org.jboss.as.domain-add-user" />
 
-        <module-def name="org.jboss.as.ee">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-ee"/>
-        </module-def>
-
         <module-def name="org.jboss.as.ee.deployment">
             <maven-resource group="org.jboss.as" artifact="jboss-as-ee-deployment"/>
         </module-def>
@@ -843,10 +847,6 @@
 
         <module-def name="org.jboss.as.pojo">
             <maven-resource group="org.jboss.as" artifact="jboss-as-pojo"/>
-        </module-def>
-
-        <module-def name="org.jboss.as.naming">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-naming"/>
         </module-def>
 
      	<module-def name="org.jboss.as.osgi">
