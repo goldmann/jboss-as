@@ -213,8 +213,28 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jboss.slf4j</groupId>
+            <artifactId>slf4j-jboss-logmanager</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.jboss.spec.javax.servlet.jstl</groupId>
             <artifactId>jboss-jstl-api_1.2_spec</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>serializer</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
         </dependency>
     </dependencies>
 
@@ -1381,11 +1401,6 @@
                 </dependency>
 
                 <dependency>
-                    <groupId>org.jboss.slf4j</groupId>
-                    <artifactId>slf4j-jboss-logmanager</artifactId>
-                </dependency>
-
-                <dependency>
                     <groupId>org.jboss.spec.javax.annotation</groupId>
                     <artifactId>jboss-annotations-api_1.1_spec</artifactId>
                 </dependency>
@@ -1673,11 +1688,6 @@
 
                 <dependency>
                     <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
                 </dependency>
 
@@ -1694,16 +1704,6 @@
                 <dependency>
                     <groupId>wsdl4j</groupId>
                     <artifactId>wsdl4j</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>xalan</groupId>
-                    <artifactId>serializer</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>xalan</groupId>
-                    <artifactId>xalan</artifactId>
                 </dependency>
 
                 <dependency>

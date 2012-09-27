@@ -165,8 +165,15 @@
 
         <module-def name="javax.xml.stream.api"/>
 
+        <module-def name="org.apache.commons.logging"/>
+
         <module-def name="org.apache.log4j">
             <maven-resource group="log4j" artifact="log4j"/>
+        </module-def>
+
+        <module-def name="org.apache.xalan">
+            <maven-resource group="xalan" artifact="serializer"/>
+            <maven-resource group="xalan" artifact="xalan"/>
         </module-def>
 
         <module-def name="org.jboss.as.controller">
@@ -303,6 +310,18 @@
 
         <module-def name="org.jboss.xnio.nio">
             <maven-resource group="org.jboss.xnio" artifact="xnio-nio"/>
+        </module-def>
+
+        <module-def name="org.slf4j">
+            <maven-resource group="org.slf4j" artifact="slf4j-api"/>
+        </module-def>
+
+        <module-def name="org.slf4j.jcl-over-slf4j">
+            <maven-resource group="org.slf4j" artifact="jcl-over-slf4j"/>
+        </module-def>
+
+        <module-def name="org.slf4j.impl">
+            <maven-resource group="org.jboss.slf4j" artifact="slf4j-jboss-logmanager"/>
         </module-def>
 
         <module-def name="sun.jdk"/>
@@ -516,8 +535,6 @@
             <maven-resource group="commons-lang" artifact="commons-lang"/>
         </module-def>
 
-        <module-def name="org.apache.commons.logging"/>
-
         <module-def name="org.apache.commons.pool">
             <maven-resource group="commons-pool" artifact="commons-pool"/>
         </module-def>
@@ -591,11 +608,6 @@
 
         <module-def name="org.apache.juddi.scout">
             <maven-resource group="org.apache.juddi.scout" artifact="scout"/>
-        </module-def>
-
-        <module-def name="org.apache.xalan">
-            <maven-resource group="xalan" artifact="serializer"/>
-            <maven-resource group="xalan" artifact="xalan"/>
         </module-def>
 
         <module-def name="org.apache.xerces">
@@ -1146,20 +1158,8 @@
             <maven-resource group="org.python" artifact="jython-standalone"/>
         </module-def>
 
-        <module-def name="org.slf4j.jcl-over-slf4j">
-            <maven-resource group="org.slf4j" artifact="jcl-over-slf4j"/>
-        </module-def>
-
         <module-def name="org.scannotation.scannotation">
             <maven-resource group="org.scannotation" artifact="scannotation"/>
-        </module-def>
-
-        <module-def name="org.slf4j">
-            <maven-resource group="org.slf4j" artifact="slf4j-api"/>
-        </module-def>
-
-        <module-def name="org.slf4j.impl">
-            <maven-resource group="org.jboss.slf4j" artifact="slf4j-jboss-logmanager"/>
         </module-def>
 
         <module-def name="org.slf4j.ext">
