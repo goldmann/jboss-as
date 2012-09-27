@@ -79,7 +79,6 @@ public class NamingExtension implements Extension {
         registration.registerOperationHandler(DESCRIBE, GenericSubsystemDescribeHandler.INSTANCE, GenericSubsystemDescribeHandler.INSTANCE, false, OperationEntry.EntryType.PRIVATE);
 
         registration.registerSubModel(NamingBindingResourceDefinition.INSTANCE);
-        registration.registerSubModel(RemoteNamingResourceDefinition.INSTANCE);
 
         if (context.isRuntimeOnlyRegistrationValid()) {
             registration.registerOperationHandler(JndiViewOperation.OPERATION_NAME, JndiViewOperation.INSTANCE, NamingSubsystemRootResourceDefinition.JNDI_VIEW, false, EnumSet.of(Flag.RUNTIME_ONLY));

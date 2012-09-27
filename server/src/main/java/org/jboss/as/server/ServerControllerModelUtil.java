@@ -117,9 +117,6 @@ import org.jboss.as.server.deployment.DeploymentUndeployHandler;
 import org.jboss.as.server.deployment.DeploymentUploadBytesHandler;
 import org.jboss.as.server.deployment.DeploymentUploadStreamAttachmentHandler;
 import org.jboss.as.server.deployment.DeploymentUploadURLHandler;
-import org.jboss.as.server.mgmt.HttpManagementResourceDefinition;
-import org.jboss.as.server.mgmt.NativeManagementResourceDefinition;
-import org.jboss.as.server.mgmt.NativeRemotingManagementResourceDefinition;
 import org.jboss.as.server.operations.DumpServicesHandler;
 import org.jboss.as.server.operations.LaunchTypeHandler;
 import org.jboss.as.server.operations.ProcessTypeHandler;
@@ -319,9 +316,6 @@ public class ServerControllerModelUtil {
 
         management.registerSubModel(SecurityRealmResourceDefinition.INSTANCE);
         management.registerSubModel(LdapConnectionResourceDefinition.INSTANCE);
-        management.registerSubModel(NativeManagementResourceDefinition.INSTANCE);
-        management.registerSubModel(NativeRemotingManagementResourceDefinition.INSTANCE);
-        management.registerSubModel(HttpManagementResourceDefinition.INSTANCE);
 
         // Other core services
         ManagementResourceRegistration serviceContainer = root.registerSubModel(PathElement.pathElement(CORE_SERVICE, SERVICE_CONTAINER), CommonProviders.SERVICE_CONTAINER_PROVIDER);

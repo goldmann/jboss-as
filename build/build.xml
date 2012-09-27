@@ -193,10 +193,6 @@
             <maven-resource group="org.jboss.as" artifact="jboss-as-protocol"/>
         </module-def>
 
-        <module-def name="org.jboss.as.remoting">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-remoting"/>
-        </module-def>
-
         <module-def name="org.jboss.as.server">
             <maven-resource group="org.jboss.as" artifact="jboss-as-server"/>
         </module-def>
@@ -260,14 +256,6 @@
 
         <module-def name="org.jboss.log4j.logmanager">
             <maven-resource group="org.jboss.logmanager" artifact="log4j-jboss-logmanager"/>
-        </module-def>
-
-        <module-def name="org.jboss.remoting3">
-            <maven-resource group="org.jboss.remoting3" artifact="jboss-remoting"/>
-        </module-def>
-
-        <module-def name="org.jboss.remoting3.remoting-jmx">
-            <maven-resource group="org.jboss.remotingjmx" artifact="remoting-jmx"/>
         </module-def>
 
         <module-def name="org.jboss.sasl">

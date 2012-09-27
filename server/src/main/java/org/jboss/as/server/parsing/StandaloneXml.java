@@ -81,7 +81,6 @@ import org.jboss.as.controller.persistence.SubsystemMarshallingContext;
 import org.jboss.as.controller.resource.SocketBindingGroupResourceDefinition;
 import org.jboss.as.domain.management.parsing.ManagementXml;
 import org.jboss.as.server.mgmt.HttpManagementResourceDefinition;
-import org.jboss.as.server.mgmt.NativeManagementResourceDefinition;
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.ModelType;
 import org.jboss.dmr.Property;
@@ -467,19 +466,15 @@ public class StandaloneXml extends CommonXml implements ManagementXml.Delegate {
                 final Attribute attribute = Attribute.forName(reader.getAttributeLocalName(i));
                 switch (attribute) {
                     case INTERFACE: {
-                        NativeManagementResourceDefinition.INTERFACE.parseAndSetParameter(value, mgmtSocket, reader);
-                        hasInterface = true;
                         break;
                     }
                     case PORT: {
-                        NativeManagementResourceDefinition.NATIVE_PORT.parseAndSetParameter(value, mgmtSocket, reader);
                         break;
                     }
                     case SECURE_PORT:
                         // ignore -- this was a bug in the xsd
                         break;
                     case SECURITY_REALM: {
-                        NativeManagementResourceDefinition.SECURITY_REALM.parseAndSetParameter(value, mgmtSocket, reader);
                         break;
                     }
                     default:
@@ -543,7 +538,6 @@ public class StandaloneXml extends CommonXml implements ManagementXml.Delegate {
                         if (http) {
                             HttpManagementResourceDefinition.SECURITY_REALM.parseAndSetParameter(value, addOp, reader);
                         } else {
-                            NativeManagementResourceDefinition.SECURITY_REALM.parseAndSetParameter(value, addOp, reader);
                         }
                         break;
                     }
@@ -599,12 +593,9 @@ public class StandaloneXml extends CommonXml implements ManagementXml.Delegate {
                 final Attribute attribute = Attribute.forName(reader.getAttributeLocalName(i));
                 switch (attribute) {
                     case INTERFACE: {
-                        NativeManagementResourceDefinition.INTERFACE.parseAndSetParameter(value, addOp, reader);
-                        hasInterface = true;
                         break;
                     }
                     case PORT: {
-                        NativeManagementResourceDefinition.NATIVE_PORT.parseAndSetParameter(value, addOp, reader);
                         break;
                     }
                     default:
@@ -700,8 +691,6 @@ public class StandaloneXml extends CommonXml implements ManagementXml.Delegate {
                 final Attribute attribute = Attribute.forName(reader.getAttributeLocalName(i));
                 switch (attribute) {
                     case NATIVE: {
-                        NativeManagementResourceDefinition.SOCKET_BINDING.parseAndSetParameter(value, addOp, reader);
-                        hasRef = true;
                         break;
                     }
                     default:
@@ -1063,19 +1052,6 @@ public class StandaloneXml extends CommonXml implements ManagementXml.Delegate {
     public void writeNativeManagementProtocol(final XMLExtendedStreamWriter writer, final ModelNode protocol)
             throws XMLStreamException {
 
-        writer.writeStartElement(Element.NATIVE_INTERFACE.getLocalName());
-        NativeManagementResourceDefinition.SECURITY_REALM.marshallAsAttribute(protocol, writer);
-
-        if (NativeManagementResourceDefinition.INTERFACE.isMarshallable(protocol)) {
-            writer.writeEmptyElement(Element.SOCKET.getLocalName());
-            NativeManagementResourceDefinition.INTERFACE.marshallAsAttribute(protocol, writer);
-            NativeManagementResourceDefinition.NATIVE_PORT.marshallAsAttribute(protocol, writer);
-        } else if (NativeManagementResourceDefinition.SOCKET_BINDING.isMarshallable(protocol)) {
-            writer.writeEmptyElement(Element.SOCKET_BINDING.getLocalName());
-            NativeManagementResourceDefinition.SOCKET_BINDING.marshallAsAttribute(protocol, writer);
-        }
-
-        writer.writeEndElement();
     }
 
     @Override

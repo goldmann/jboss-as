@@ -293,7 +293,6 @@
         <module>platform-mbean</module>
         <module>process-controller</module>
         <module>protocol</module>
-        <module>remoting</module>
         <module>server</module>
         <module>subsystem-test</module>
         <module>threads</module>
