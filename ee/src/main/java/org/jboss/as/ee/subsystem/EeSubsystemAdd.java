@@ -42,8 +42,6 @@ import org.jboss.as.ee.component.deployers.EEDistinctNameProcessor;
 import org.jboss.as.ee.component.deployers.EEModuleConfigurationProcessor;
 import org.jboss.as.ee.component.deployers.EEModuleInitialProcessor;
 import org.jboss.as.ee.component.deployers.EEModuleNameProcessor;
-import org.jboss.as.ee.component.deployers.EarApplicationNameProcessor;
-import org.jboss.as.ee.component.deployers.EarMessageDestinationProcessor;
 import org.jboss.as.ee.component.deployers.InterceptorAnnotationProcessor;
 import org.jboss.as.ee.component.deployers.LifecycleAnnotationParsingProcessor;
 import org.jboss.as.ee.component.deployers.MessageDestinationResolutionProcessor;
@@ -64,12 +62,6 @@ import org.jboss.as.ee.naming.ModuleContextProcessor;
 import org.jboss.as.ee.structure.ApplicationClientDeploymentProcessor;
 import org.jboss.as.ee.structure.ComponentAggregationProcessor;
 import org.jboss.as.ee.structure.DescriptorPropertyReplacementProcessor;
-import org.jboss.as.ee.structure.EJBClientDescriptorParsingProcessor;
-import org.jboss.as.ee.structure.EarDependencyProcessor;
-import org.jboss.as.ee.structure.EarInitializationProcessor;
-import org.jboss.as.ee.structure.EarMetaDataParsingProcessor;
-import org.jboss.as.ee.structure.EarStructureProcessor;
-import org.jboss.as.ee.structure.EjbJarDeploymentProcessor;
 import org.jboss.as.ee.structure.GlobalModuleDependencyProcessor;
 import org.jboss.as.ee.structure.InitializeInOrderProcessor;
 import org.jboss.as.naming.management.JndiViewExtensionRegistry;
@@ -136,12 +128,6 @@ public class EeSubsystemAdd extends AbstractBoottimeAddStepHandler {
                 ROOT_LOGGER.debug("Activating EE subsystem");
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EE_SPEC_DESC_PROPERTY_REPLACEMENT, specDescriptorPropertyReplacementProcessor);
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EE_JBOSS_DESC_PROPERTY_REPLACEMENT, jbossDescriptorPropertyReplacementProcessor);
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EAR_DEPLOYMENT_INIT, new EarInitializationProcessor());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EAR_APP_XML_PARSE, new EarMetaDataParsingProcessor());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_JBOSS_EJB_CLIENT_XML_PARSE, new EJBClientDescriptorParsingProcessor());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EJB_EAR_APPLICATION_NAME, new EarApplicationNameProcessor());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EAR, new EarStructureProcessor());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EJB_JAR_IN_EAR, new EjbJarDeploymentProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_APPLICATION_CLIENT_IN_EAR, new ApplicationClientDeploymentProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_MANAGED_BEAN_JAR_IN_EAR, new ManagedBeanSubDeploymentMarkingProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.STRUCTURE, Phase.STRUCTURE_EE_MODULE_INIT, new EEModuleInitialProcessor(context.getProcessType() == ProcessType.APPLICATION_CLIENT));
@@ -159,7 +145,6 @@ public class EeSubsystemAdd extends AbstractBoottimeAddStepHandler {
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.PARSE, Phase.PARSE_AROUNDINVOKE_ANNOTATION, new AroundInvokeAnnotationParsingProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.PARSE, Phase.PARSE_EAR_SUBDEPLOYMENTS_ISOLATION_DEFAULT, isolationProcessor);
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.PARSE, Phase.PARSE_DISTINCT_NAME, new EEDistinctNameProcessor());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.PARSE, Phase.PARSE_EAR_MESSAGE_DESTINATIONS, new EarMessageDestinationProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.PARSE, Phase.PARSE_MANAGED_BEAN_ANNOTATION, new ManagedBeanAnnotationProcessor());
 
 
@@ -168,7 +153,6 @@ public class EeSubsystemAdd extends AbstractBoottimeAddStepHandler {
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.DEPENDENCIES, Phase.DEPENDENCIES_EE_CLASS_DESCRIPTIONS, new ApplicationClassesAggregationProcessor());
 
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.POST_MODULE, Phase.POST_MODULE_VALIDATOR_FACTORY, new BeanValidationFactoryDeployer());
-                processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.POST_MODULE, Phase.POST_MODULE_EAR_DEPENDENCY, new EarDependencyProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.POST_MODULE, Phase.POST_INITIALIZE_IN_ORDER, new InitializeInOrderProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.POST_MODULE, Phase.POST_MODULE_INJECTION_ANNOTATION, new ResourceInjectionAnnotationParsingProcessor());
                 processorTarget.addDeploymentProcessor(EeExtension.SUBSYSTEM_NAME, Phase.POST_MODULE, Phase.POST_MODULE_ENV_ENTRY, new ResourceReferenceProcessor());

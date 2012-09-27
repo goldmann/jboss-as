@@ -29,7 +29,6 @@ import org.jboss.as.server.deployment.DeploymentUnitProcessor;
 import org.jboss.as.server.deployment.SubDeploymentMarker;
 import org.jboss.as.server.deployment.module.ModuleRootMarker;
 import org.jboss.as.server.deployment.module.ResourceRoot;
-import org.jboss.metadata.ear.spec.ModuleMetaData;
 import org.jboss.vfs.VirtualFile;
 
 import java.util.List;
@@ -76,30 +75,6 @@ public class ApplicationClientDeploymentProcessor implements DeploymentUnitProce
                             if (mainClass != null && !mainClass.isEmpty()) {
                                 SubDeploymentMarker.mark(resourceRoot);
                                 ModuleRootMarker.mark(resourceRoot);
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (deploymentUnit.getName().toLowerCase(Locale.ENGLISH).endsWith(".jar")) {
-            final ResourceRoot root = deploymentUnit.getAttachment(Attachments.DEPLOYMENT_ROOT);
-            final ModuleMetaData md = root.getAttachment(org.jboss.as.ee.structure.Attachments.MODULE_META_DATA);
-            if (md != null) {
-                if (md.getType() == ModuleMetaData.ModuleType.Client) {
-                    DeploymentTypeMarker.setType(DeploymentType.APPLICATION_CLIENT, deploymentUnit);
-                }
-            } else {
-                VirtualFile appclientClientXml = root.getRoot().getChild(META_INF_APPLICATION_CLIENT_XML);
-                if (appclientClientXml.exists()) {
-                    DeploymentTypeMarker.setType(DeploymentType.APPLICATION_CLIENT, deploymentUnit);
-                } else {
-                    final Manifest manifest = root.getAttachment(Attachments.MANIFEST);
-                    if (manifest != null) {
-                        Attributes main = manifest.getMainAttributes();
-                        if (main != null) {
-                            String mainClass = main.getValue("Main-Class");
-                            if (mainClass != null && !mainClass.isEmpty()) {
-                                DeploymentTypeMarker.setType(DeploymentType.APPLICATION_CLIENT, deploymentUnit);
                             }
                         }
                     }

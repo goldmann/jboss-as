@@ -22,11 +22,8 @@
 
 package org.jboss.as.ee.structure;
 
-import org.jboss.as.ee.metadata.EJBClientDescriptorMetaData;
 import org.jboss.as.server.deployment.AttachmentKey;
 import org.jboss.as.server.deployment.AttachmentList;
-import org.jboss.metadata.ear.spec.EarMetaData;
-import org.jboss.metadata.ear.spec.ModuleMetaData;
 import org.jboss.msc.service.ServiceName;
 import org.jboss.vfs.VirtualFile;
 
@@ -38,16 +35,10 @@ import org.jboss.vfs.VirtualFile;
  */
 public final class Attachments {
 
-    public static final AttachmentKey<EarMetaData> EAR_METADATA = AttachmentKey.create(EarMetaData.class);
-
     /**
      * The distinct-name that is configured for the EE deployment, in the deployment descriptor
      */
     public static final AttachmentKey<String> DISTINCT_NAME = AttachmentKey.create(String.class);
-
-    public static final AttachmentKey<ModuleMetaData> MODULE_META_DATA = AttachmentKey.create(ModuleMetaData.class);
-
-    public static final AttachmentKey<EJBClientDescriptorMetaData> EJB_CLIENT_METADATA = AttachmentKey.create(EJBClientDescriptorMetaData.class);
 
     /**
      * The alternate deployment descriptor location
