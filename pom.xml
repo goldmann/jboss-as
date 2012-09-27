@@ -284,10 +284,6 @@
         <module>controller</module>
         <module>controller-client</module>
         <module>deployment-repository</module>
-        <module>domain-http</module>
-        <module>domain-management</module>
-        <module>embedded</module>
-        <module>management-client-content</module>
         <module>network</module>
         <module>platform-mbean</module>
         <module>process-controller</module>

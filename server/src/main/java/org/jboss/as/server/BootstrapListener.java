@@ -29,8 +29,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.jboss.as.network.NetworkUtils;
-import org.jboss.as.server.mgmt.HttpManagementService;
-import org.jboss.as.server.mgmt.domain.HttpManagement;
 import org.jboss.msc.service.AbstractServiceListener;
 import org.jboss.msc.service.ServiceContainer;
 import org.jboss.msc.service.ServiceController;
@@ -161,37 +159,7 @@ public class BootstrapListener extends AbstractServiceListener<Object> {
     }
 
     private void logAdminConsole(ServiceContainer container) {
-        ServiceController<?> controller = container.getService(HttpManagementService.SERVICE_NAME);
-        if (controller != null) {
-            HttpManagement mgmt = (HttpManagement)controller.getValue();
-
-            boolean hasHttp = mgmt.getHttpNetworkInterfaceBinding() != null && mgmt.getHttpPort() > 0;
-            boolean hasHttps = mgmt.getHttpsNetworkInterfaceBinding() != null && mgmt.getHttpsPort() > 0;
-            if (hasHttp && hasHttps) {
-                ServerLogger.AS_ROOT_LOGGER.logHttpAndHttpsManagement(NetworkUtils.formatAddress(mgmt.getHttpNetworkInterfaceBinding().getAddress()), mgmt.getHttpPort(), NetworkUtils.formatAddress(mgmt.getHttpsNetworkInterfaceBinding().getAddress()), mgmt.getHttpsPort());
-                if (mgmt.hasConsole()) {
-                    ServerLogger.AS_ROOT_LOGGER.logHttpAndHttpsConsole(NetworkUtils.formatAddress(mgmt.getHttpNetworkInterfaceBinding().getAddress()), mgmt.getHttpPort(), NetworkUtils.formatAddress(mgmt.getHttpsNetworkInterfaceBinding().getAddress()), mgmt.getHttpsPort());
-                } else {
-                    ServerLogger.AS_ROOT_LOGGER.logNoConsole();
-                }
-            } else if (hasHttp) {
-                ServerLogger.AS_ROOT_LOGGER.logHttpManagement(NetworkUtils.formatAddress(mgmt.getHttpNetworkInterfaceBinding().getAddress()), mgmt.getHttpPort());
-                if (mgmt.hasConsole()) {
-                    ServerLogger.AS_ROOT_LOGGER.logHttpConsole(NetworkUtils.formatAddress(mgmt.getHttpNetworkInterfaceBinding().getAddress()), mgmt.getHttpPort());
-                } else {
-                    ServerLogger.AS_ROOT_LOGGER.logNoConsole();
-                }
-            } else if (hasHttps) {
-                ServerLogger.AS_ROOT_LOGGER.logHttpsManagement(NetworkUtils.formatAddress(mgmt.getHttpsNetworkInterfaceBinding().getAddress()), mgmt.getHttpsPort());
-                if (mgmt.hasConsole()) {
-                    ServerLogger.AS_ROOT_LOGGER.logHttpsConsole(NetworkUtils.formatAddress(mgmt.getHttpsNetworkInterfaceBinding().getAddress()), mgmt.getHttpsPort());
-                } else {
-                    ServerLogger.AS_ROOT_LOGGER.logNoConsole();
-                }
-            } else {
-                ServerLogger.AS_ROOT_LOGGER.logNoHttpManagement();
-                ServerLogger.AS_ROOT_LOGGER.logNoConsole();
-            }
-        }
+        ServerLogger.AS_ROOT_LOGGER.logNoHttpManagement();
+        ServerLogger.AS_ROOT_LOGGER.logNoConsole();
     }
 }
