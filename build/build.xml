@@ -173,10 +173,6 @@
             <maven-resource group="org.jboss.as" artifact="jboss-as-embedded"/>
         </module-def>
 
-        <module-def name="org.jboss.as.jmx">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-jmx"/>
-        </module-def>
-
         <module-def name="org.jboss.as.network">
             <maven-resource group="org.jboss.as" artifact="jboss-as-network"/>
         </module-def>

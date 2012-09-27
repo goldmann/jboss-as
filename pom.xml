@@ -288,7 +288,6 @@
         <module>domain-management</module>
         <module>embedded</module>
         <module>management-client-content</module>
-        <module>jmx</module>
         <module>network</module>
         <module>platform-mbean</module>
         <module>process-controller</module>
