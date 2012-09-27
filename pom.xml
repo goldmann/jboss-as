@@ -290,7 +290,6 @@
         <module>protocol</module>
         <module>server</module>
         <module>subsystem-test</module>
-        <module>threads</module>
     </modules>
 
     <build>
