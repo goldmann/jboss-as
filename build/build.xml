@@ -181,6 +181,10 @@
             <maven-resource group="org.jboss.as" artifact="jboss-as-deployment-repository"/>
         </module-def>
 
+        <module-def name="org.jboss.as.deployment-scanner">
+            <maven-resource group="org.jboss.as" artifact="jboss-as-deployment-scanner"/>
+        </module-def>
+
         <module-def name="org.jboss.as.ee">
             <maven-resource group="org.jboss.as" artifact="jboss-as-ee"/>
         </module-def>
@@ -761,10 +765,6 @@
 
         <module-def name="org.jboss.as.connector">
             <maven-resource group="org.jboss.as" artifact="jboss-as-connector"/>
-        </module-def>
-
-        <module-def name="org.jboss.as.deployment-scanner">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-deployment-scanner"/>
         </module-def>
 
     	<module-def name="org.jboss.as.domain-add-user" />

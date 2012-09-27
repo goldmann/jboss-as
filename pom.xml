@@ -284,6 +284,7 @@
         <module>controller</module>
         <module>controller-client</module>
         <module>deployment-repository</module>
+        <module>deployment-scanner</module>
         <module>ee</module>
         <module>naming</module>
         <module>network</module>
