@@ -198,6 +198,10 @@
             <maven-resource group="org.jboss.as" artifact="jboss-as-ee"/>
         </module-def>
 
+        <module-def name="org.jboss.as.logging">
+            <maven-resource group="org.jboss.as" artifact="jboss-as-logging"/>
+        </module-def>
+
         <module-def name="org.jboss.as.naming">
             <maven-resource group="org.jboss.as" artifact="jboss-as-naming"/>
         </module-def>
@@ -840,10 +844,6 @@
 
         <module-def name="org.jboss.as.jpa.util">
             <maven-resource group="org.jboss.as" artifact="jboss-as-jpa-util"/>
-        </module-def>
-
-        <module-def name="org.jboss.as.logging">
-            <maven-resource group="org.jboss.as" artifact="jboss-as-logging"/>
         </module-def>
 
         <module-def name="org.jboss.as.mail">

@@ -286,6 +286,7 @@
         <module>deployment-repository</module>
         <module>deployment-scanner</module>
         <module>ee</module>
+        <module>logging</module>
         <module>naming</module>
         <module>network</module>
         <module>platform-mbean</module>
